@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	_ "github.com/lib/pq"
@@ -15,7 +14,7 @@ func TestTransferTx(t *testing.T) {
 	account2 :=createAccountRandom(t)
 	n :=5
 	amount := int64(10)
-	fmt.Println("Begin: ",account1.Balance,account2.Balance)
+//	fmt.Println("Begin: ",account1.Balance,account2.Balance)
 
 	errs := make( chan error)
 	results := make( chan TransferTxResult)
@@ -36,7 +35,7 @@ func TestTransferTx(t *testing.T) {
 	existed := make(map[int]bool)
 	for i := 0; i < n; i++ {
 		err := <- errs
-		fmt.Println(err)
+		//fmt.Println(err)
 		require.NoError(t,err)
 		result := <- results
 		require.NotEmpty(t,result)
@@ -72,7 +71,7 @@ func TestTransferTx(t *testing.T) {
 
 		_,err= store.GetEntry(context.Background(),toEntry.ID)
 		require.NoError(t,err)
-		fmt.Println("Tx: ",result)
+	//	fmt.Println("Tx: ",result)
 
 		fromAccount :=result.FromAccount
 		require.NotEmpty(t,fromAccount)
@@ -81,7 +80,7 @@ func TestTransferTx(t *testing.T) {
 		toAccount :=result.ToAccount
 		require.NotEmpty(t,toAccount)
 		require.Equal(t,account2.ID,toAccount.ID)
-		fmt.Println("Tx: ",fromAccount.Balance,toAccount.Balance)
+	//	fmt.Println("Tx: ",fromAccount.Balance,toAccount.Balance)
 		diff1 := account1.Balance - fromAccount.Balance
 		diff2 := toAccount.Balance- account2.Balance
 
@@ -110,7 +109,7 @@ func TestTransferTxDeadlock(t *testing.T) {
 	account2 :=createAccountRandom(t)
 	n :=10
 	amount := int64(10)
-	fmt.Println("Begin: ",account1.Balance,account2.Balance)
+	//fmt.Println("Begin: ",account1.Balance,account2.Balance)
 
 	errs := make( chan error)
 	
